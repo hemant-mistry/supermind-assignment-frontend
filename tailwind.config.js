@@ -5,8 +5,11 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
-  theme: {
-    extend: {},
+  daisyui:{
+    themes:["black"]
   },
-  plugins: [daisyui],
+  plugins: [
+    require('@tailwindcss/typography'),
+    daisyui
+  ],
 }
