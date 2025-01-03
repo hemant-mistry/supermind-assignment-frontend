@@ -1,10 +1,14 @@
 import VideoWalkThrough from "../assets/VideoWalkThroughIcon.png";
 import GithubLogo from "../assets/github-icon.png";
+import VerveLogo from "../assets/verve.png";
 export default function Navbar() {
   return (
     <>
       <div className="navbar-container flex items-center justify-between">
-        <div className="brand text-2xl font-semibold">Social Glance</div>
+        <div className="brand text-2xl font-semibold flex items-center">
+        <img src={VerveLogo} alt="Video Walkthrough" className="w-6 h-6 mr-4" />
+          Social Glance
+          </div>
         <div className="flex demo">
           <button
             className="btn btn-primary btn-sm rounded-lg"
