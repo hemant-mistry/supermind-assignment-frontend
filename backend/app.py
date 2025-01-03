@@ -15,5 +15,9 @@ def get_response():
 
     return jsonify({"response": response})    
 
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 if __name__ == "__main__":
     app.run(debug=True)
