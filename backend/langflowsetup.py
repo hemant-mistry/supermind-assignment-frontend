@@ -1,12 +1,15 @@
 import json
+import os
 import requests
 from typing import Optional
 
-BASE_API_URL = "https://api.langflow.astra.datastax.com"
-LANGFLOW_ID = "XXX"
-FLOW_ID = "XXX"
-APPLICATION_TOKEN = "XXX"
-ENDPOINT = "verve" # You can set a specific endpoint name in the flow settings
+# Retrieve configuration from environment variables
+BASE_API_URL = os.getenv("BASE_API_URL")
+LANGFLOW_ID = os.getenv("LANGFLOW_ID")
+FLOW_ID = os.getenv("FLOW_ID")
+APPLICATION_TOKEN = os.getenv("APPLICATION_TOKEN")
+ENDPOINT = os.getenv("ENDPOINT")
+
 TWEAKS = {
     "ChatInput-LHXvo": {},
     "ParseData-ky5qO": {},
