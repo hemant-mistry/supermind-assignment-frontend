@@ -5,9 +5,15 @@ app = Flask(__name__)
 
 @app.route("/api/getresponse", methods = ['POST'])
 def get_response():
+    data = request.get_json()
 
-    print(langflowsetup.start_flow())
-    
+    if not data or 'message' not in data:
+        return jsonify({"error": "Message not provided in the request."}), 400
+
+    message = data['message']
+    response = langflowsetup.start_flow(message)
+
+    return jsonify({"response": response})    
 
 if __name__ == "__main__":
     app.run(debug=True)
