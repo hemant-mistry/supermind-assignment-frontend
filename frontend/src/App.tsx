@@ -94,7 +94,7 @@ function App() {
       ) : null}
       <div className="chat-container flex flex-col items-center">
         <div className="w-full max-w-2xl">
-          <div className="message-thread flex flex-col gap-2 items-start mt-10">
+          <div className="message-thread flex flex-col gap-2 items-start mt-10 text-left">
             {messages.map((msg, index) => (
               <div
                 key={index}
