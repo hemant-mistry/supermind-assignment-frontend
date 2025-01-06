@@ -20,7 +20,9 @@ With this chatbot, you can make data-driven decisions and gain actionable insigh
 
 ## Screenshots
 
-![image](https://github.com/user-attachments/assets/23b944dc-c1a0-45af-b516-4c23b04fc5c5)
+![image](https://github.com/user-attachments/assets/d6d31e4a-7484-4adb-b4f0-17341651fee0)
+
+![image](https://github.com/user-attachments/assets/914c2fab-d501-45ba-87f3-1f15e3da89ed)
 
 
 ## Support
