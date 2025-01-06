@@ -5,6 +5,7 @@ import sendIcon from "./assets/sendicon.png";
 
 function App() {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const endOfMessagesRef = useRef<HTMLDivElement>(null); // Reference for the last message
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<{ user: string; text: string }[]>([]);
   const [showPrompts, setShowPrompts] = useState(true);
@@ -19,15 +20,23 @@ function App() {
     }
   }, [message]);
 
+  useEffect(() => {
+    // Scroll to the bottom of the message thread
+    if (endOfMessagesRef.current) {
+      endOfMessagesRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
+
   const handleSendMessage = async () => {
     if (message.trim()) {
       setMessages([...messages, { user: "US", text: message }]);
       setMessage("");
       setShowPrompts(false);
 
+      // Set a loading spinner instead of "loading.."
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: "AI", text: "loading.." },
+        { user: "AI", text: "" }, // Temporarily add an empty text
       ]);
 
       try {
@@ -44,12 +53,12 @@ function App() {
 
         const data = await response.json();
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1),
+          ...prevMessages.slice(0, -1), // Remove the temporary loading message
           { user: "AI", text: data.response },
         ]);
       } catch (error) {
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1),
+          ...prevMessages.slice(0, -1), // Remove the temporary loading message
           { user: "AI", text: "Error fetching response" },
         ]);
       }
@@ -57,11 +66,11 @@ function App() {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if(e.key === "Enter" && !e.shiftKey){
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  }
+  };
 
   return (
     <>
@@ -74,7 +83,7 @@ function App() {
           <p className="text-sm text-gray-400 mt-2">
             Social Glance is a new AI chatbot that helps you gain insights about
             your social media metrics.
-            <br></br>
+            <br />
             Select one of the below prompts to get started!
           </p>
         </div>
@@ -94,7 +103,7 @@ function App() {
       ) : null}
       <div className="chat-container flex flex-col items-center">
         <div className="w-full max-w-2xl">
-          <div className="message-thread flex flex-col gap-2 items-start mt-10 text-left">
+          <div className="message-thread flex flex-col gap-2 items-start mt-10 text-left max-h-[500px] overflow-y-scroll scrollbar-hide">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -109,11 +118,20 @@ function App() {
                     <span>{msg.user}</span>
                   </div>
                 </div>
-                <div className={`ml-5 ${msg.user === "US" ? "user-message" : "ai-message"}`}>
-                  {msg.text}
+                <div
+                  className={`ml-5 ${
+                    msg.user === "US" ? "user-message" : "ai-message"
+                  }`}
+                >
+                  {msg.text === "" ? (
+                    <span className="loading loading-dots loading-md"></span>
+                  ) : (
+                    msg.text
+                  )}
                 </div>
               </div>
             ))}
+            <div ref={endOfMessagesRef} /> {/* Scroll target */}
           </div>
 
           <div className="w-full flex flex-col items-center gap-2 fixed bottom-0 left-0 p-4">
