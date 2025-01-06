@@ -27,38 +27,34 @@ function App() {
     }
   }, [messages]);
 
-  const handleSendMessage = async () => {
-    if (message.trim()) {
-      setMessages([...messages, { user: "US", text: message }]);
+  const handleSendMessage = async (msg: string) => {
+    if (msg.trim()) {
+      setMessages([...messages, { user: "US", text: msg }]);
       setMessage("");
       setShowPrompts(false);
 
-      // Set a loading spinner instead of "loading.."
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: "AI", text: "" }, // Temporarily add an empty text
+        { user: "AI", text: "loading.." },
       ]);
 
       try {
-        const response = await fetch(
-          "https://supermind-assignment-frontend.onrender.com/api/getresponse",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ message }),
-          }
-        );
+        const response = await fetch("https://supermind-assignment-frontend.onrender.com/api/getresponse", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message: msg }),
+        });
 
         const data = await response.json();
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1), // Remove the temporary loading message
+          ...prevMessages.slice(0, -1),
           { user: "AI", text: data.response },
         ]);
       } catch (error) {
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1), // Remove the temporary loading message
+          ...prevMessages.slice(0, -1),
           { user: "AI", text: "Error fetching response" },
         ]);
       }
@@ -68,7 +64,7 @@ function App() {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSendMessage(message);
     }
   };
 
@@ -89,21 +85,30 @@ function App() {
         </div>
       ) : null}
       {showPrompts ? (
-        <div className="prompts flex flex-col items-center gap-5 mt-10">
-          <button className="btn btn-ghost border-white rounded-lg">
-            What is the best time to post for achieving maximum reach?
-          </button>
-          <button className="btn btn-ghost border-white rounded-lg">
-            Give me a comparison between reels, carousels and static posts.
-          </button>
-          <button className="btn btn-ghost border-white rounded-lg">
-            Give me the top 5 posts with highest reach
-          </button>
-        </div>
+         <div className="prompts flex flex-col items-center gap-5 mt-10">
+         <button
+           className="btn btn-ghost border-white rounded-lg"
+           onClick={() => handleSendMessage("What should be the preferred post type to gain maximum reach")}
+         >
+           What should be the preferred post type to gain maximum reach
+         </button>
+         <button
+           className="btn btn-ghost border-white rounded-lg"
+           onClick={() => handleSendMessage("What is the distribution of post types (carousel vs. reels) among the actors?")}
+         >
+           What is the distribution of post types (carousel vs. reels) among the actors?
+         </button>
+         <button
+           className="btn btn-ghost border-white rounded-lg"
+           onClick={() => handleSendMessage("Who is the most famous influencer based on engagements")}
+         >
+           Who is the most famous influencer based on engagements
+         </button>
+       </div>
       ) : null}
       <div className="chat-container flex flex-col items-center">
         <div className="w-full max-w-2xl">
-          <div className="message-thread flex flex-col gap-2 items-start mt-10 text-left max-h-[500px] overflow-y-scroll scrollbar-hide">
+          <div className="message-thread flex flex-col gap-4 items-start mt-10 text-left max-h-[500px] overflow-y-scroll scrollbar-hide">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -149,14 +154,14 @@ function App() {
                 <div className="flex items-center absolute right-2 top-0 h-full pr-2">
                   <button
                     className="flex items-center justify-center"
-                    onClick={handleSendMessage}
+                    onClick={() => handleSendMessage(message)}
                   >
                     <img src={sendIcon} alt="Send" className="w-6 h-6" />
                   </button>
                 </div>
               </div>
             </div>
-            <div className="prompt-caution text-center text-xs mt-2">
+            <div className="prompt-caution text-center text-xs mt-2 mb-4">
               Gemini may display inaccurate info, including about people, so
               double-check its responses.{" "}
               <a
