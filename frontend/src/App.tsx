@@ -35,7 +35,7 @@ function App() {
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { user: "AI", text: "loading.." },
+        { user: "AI", text: "" }, // Temporarily add an empty text
       ]);
 
       try {
@@ -49,12 +49,12 @@ function App() {
 
         const data = await response.json();
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1),
+          ...prevMessages.slice(0, -1), // Remove the temporary loading message
           { user: "AI", text: data.response },
         ]);
       } catch (error) {
         setMessages((prevMessages) => [
-          ...prevMessages.slice(0, -1),
+          ...prevMessages.slice(0, -1), // Remove the temporary loading message
           { user: "AI", text: "Error fetching response" },
         ]);
       }
