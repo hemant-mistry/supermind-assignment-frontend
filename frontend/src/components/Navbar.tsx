@@ -53,10 +53,15 @@ export default function Navbar() {
               </div>
             </div>
           </dialog>
-          <div className="btn btn-primary btn-sm rounded-lg ml-4">
-            <img src={GithubLogo} alt="Video Walkthrough" className="w-6 h-6" />
-            Github
-          </div>
+          <a
+            href="https://github.com/hemant-mistry/supermind-assignment-frontend"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-sm rounded-lg ml-4 flex items-center"
+          >
+            <img src={GithubLogo} alt="GitHub" className="w-6 h-6 mr-2" />
+            GitHub
+          </a>
         </div>
       </div>
     </>
